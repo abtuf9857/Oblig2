@@ -5,17 +5,22 @@ function billettkjøp() {
     if (sjekkAntall() && sjekkFornavn() && sjekkEtternavn() && sjekkTelefonnr() && sjekkEpost()) {
 
 
+        let bestilling = {
+            film: document.getElementById("Film").value,
+            antall: document.getElementById("Antall").value,
+            fornavn: document.getElementById("Fornavn").value,
+            etternavn: document.getElementById("Etternavn").value,
+            tlfnr: document.getElementById("Telefonnr").value,
+            epost: document.getElementById("Epost").value,
+
+
+        };
+
+        $.get("bestilling?filmnavn=" + bestilling.film, function () {
+            alert("juhu!");
+        });
         billetter.push(
-            {
-                film: document.getElementById("Film").value,
-                antall: document.getElementById("Antall").value,
-                fornavn: document.getElementById("Fornavn").value,
-                etternavn: document.getElementById("Etternavn").value,
-                tlfnr: document.getElementById("Telefonnr").value,
-                epost: document.getElementById("Epost").value,
-
-
-            })
+            bestilling)
         document.getElementById("Antall").value = ""
         document.getElementById("Fornavn").value = ""
         document.getElementById("Etternavn").value = ""
@@ -132,3 +137,26 @@ function isNumeric(str) {
     return !isNaN(str) &&
         !isNaN(parseFloat(str))
 }
+
+$(document).ready(function () {
+    $("#billettkjop").click(function() {
+        billettkjøp();
+
+
+        $.get("/kjøpt",function (data) {
+            $("#Antall").html(data.value)
+            $("#Fornavn").html(data.value)
+            $("#Etternavnnavn").html(data.value)
+            $("#Telefonnr").html(data.value)
+            $("#Epost").html(data.value)
+
+
+        })
+
+/*$.ajax({
+            url: "/"
+        }).then(function(data) {
+            alert(data);
+        });*/
+    });
+});
