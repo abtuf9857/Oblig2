@@ -10,25 +10,27 @@ function billettkjøp() {
             antall: document.getElementById("Antall").value,
             fornavn: document.getElementById("Fornavn").value,
             etternavn: document.getElementById("Etternavn").value,
-            tlfnr: document.getElementById("Telefonnr").value,
+            telefonnr: document.getElementById("Telefonnr").value,
             epost: document.getElementById("Epost").value,
 
 
         };
 
-        $.get("bestilling?filmnavn=" + bestilling.film, function () {
-            alert("juhu!");
-        });
-        billetter.push(
-            bestilling)
         document.getElementById("Antall").value = ""
         document.getElementById("Fornavn").value = ""
         document.getElementById("Etternavn").value = ""
         document.getElementById("Telefonnr").value = ""
         document.getElementById("Epost").value = ""
-        visBillett()
+
+        $.post("/lagre",bestilling,function (){
+visBillett()
+        })
 
     }
+    $.get("/hentAlle", function (data) {
+        visBillett(data)
+
+    });
 }
 
 function sjekkAntall() {
@@ -143,12 +145,6 @@ $(document).ready(function () {
         billettkjøp();
 
 
-        $.get("/kjøpt",function (data) {
-            $("#Antall").html(data.value)
-            $("#Fornavn").html(data.value)
-            $("#Etternavnnavn").html(data.value)
-            $("#Telefonnr").html(data.value)
-            $("#Epost").html(data.value)
 
 
         })
@@ -159,4 +155,4 @@ $(document).ready(function () {
             alert(data);
         });*/
     });
-});
+
